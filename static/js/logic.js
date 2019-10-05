@@ -1,9 +1,15 @@
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
 
 d3.json(url, function(data) {
-    // Once we get a response, send the data.features object to the createFeatures function
     createFeatures(data.features);
   });
+
+  function getColor(d) {
+    return d < 1 ? 'rgb(255,255,178)' : 
+            d < 2  ? 'rgb(254,204,92)' :
+            d < 3  ? 'rgb(253,141,60)' :
+            d < 4  ? 'rgb(240,59,32)' :
+                     'rgb(189,0,38)';}
 
 function createFeatures(earthquakeData) {
 
@@ -24,7 +30,7 @@ function createFeatures(earthquakeData) {
                   
             var geojsonMarkerOptions = {
             radius: 4*feature.properties.mag,
-            fillColor: color,
+            fillColor: getColor(feature.properties.mag),
             color: "black",
             weight: 1,
             opacity: 1,
@@ -64,19 +70,6 @@ function createMap(earthquakes) {
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
       }).addTo(map);
-
-    function getColor(d) {
-    return d < 1 ? 'rgb(221,186,122)' : 
-            d < 2  ? 'rgb(243,160,125)' :
-            d < 3  ? 'rgb(164,142,113)' :
-            d < 4  ? 'rgb(113,116,109)' :
-            // d < 5  ? 'rgb(255,135,135)' :
-            // d < 6  ? 'rgb(255,105,105)' :
-            // d < 7  ? 'rgb(255,75,75)' :
-            // d < 8  ? 'rgb(255,45,45)' :
-            // d < 9  ? 'rgb(255,15,15)' :
-                        'rgb(64,103,103)';
-    }
 
     var legend = L.control({position: 'bottomright'});
   
